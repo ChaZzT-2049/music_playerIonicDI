@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      Canciones <ion-icon aria-hidden="true" name="musical-notes"></ion-icon>
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,9 +9,34 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
+      <ion-title size="large">Canciones</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-fab slot="fixed" vertical="bottom" horizontal="right">
+    <ion-fab-button (click)="randomTrack()">
+      <ion-icon name="shuffle"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Canciones Agregadas</ion-card-title>
+      <ion-card-subtitle>Total: {{tracksApi.length}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list>
+        <ion-item *ngFor="let track of tracksApi">
+          <ion-thumbnail slot="start">
+            <img alt="Silhouette of mountains" src={{track.album.cover}} />
+          </ion-thumbnail>
+          <ion-label style="font-weight: 100;">{{track.title}}<br>
+            <small>{{track.artist.name}} - {{track.album.title}}</small>
+          </ion-label>
+          <ion-icon *ngIf="trackProvider.cancion && (track.id === trackProvider.cancion.id) && !trackProvider.audio.paused else play" color="primary" slot="end" name="pause" (click)="setTrack(track)" aria-hidden="true"></ion-icon>
+          <ng-template #play>
+            <ion-icon (click)="setTrack(track)" aria-hidden="true" slot="end" name="play"></ion-icon>
+          </ng-template>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

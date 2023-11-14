@@ -1,17 +1,73 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Tab 3
+      Buscar
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
+      <ion-title size="large">Buscar</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <ion-grid>
+    <ion-row>
+      <ion-col sixe="12">
+        <ion-item>
+          <ion-searchbar autocomplete="true" type="search" [(ngModel)]="search" placeholder="¿Buscas Algo?"></ion-searchbar>
+          <ion-button *ngIf="search" (click)="get(search)"><ion-icon aria-hidden="true" name="search"></ion-icon></ion-button>
+        </ion-item>
+        <ion-item *ngIf="total">
+          Resultados: 
+          {{total | number}}
+        </ion-item>
+        <ion-item *ngIf="total === 0">
+          Sin Resultados
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" size-md="6" size-lg="3" *ngFor="let result of results">
+        <ion-card style="height: 100%; display: flex; flex-direction: column; justify-content: space-between;">
+          <img alt="Silhouette of mountains" src={{result.album.cover_big}} />
+          <ion-card-header>
+            <ion-card-title>{{result.title_short}}</ion-card-title>
+            <ion-card-subtitle>{{result.album.title}}</ion-card-subtitle>
+          </ion-card-header>
+        
+          <ion-card-content>
+            {{result.artist.name}} 
+            <small>{{result.rank | number}}</small>
+            <br>
+            <span>{{result.duration * 1000 | date:'mm:ss' }}</span>
+          </ion-card-content>
+          <ion-card-content>
+            <ion-button (click)="playPreview(result)" *ngIf="trackProvider.cancion && (result.id === trackProvider.cancion.id) && !trackProvider.audio.paused else play">
+              Pause <ion-icon name="pause" slot="start"></ion-icon>
+            </ion-button>
+            <ng-template #play>
+              <ion-button (click)="playPreview(result)" >
+                Play <ion-icon name="play" slot="start"></ion-icon>
+              </ion-button>
+            </ng-template>
+          </ion-card-content>
+          <ion-button (click)="add(result)">Añadir a Favoritos</ion-button>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <hr>
+    <ion-row>
+      <ion-col size="12">
+        <ion-item *ngIf="total">
+          <ion-buttons style="margin: 0 auto;">
+            <ion-button (click)="get(prevResults)" *ngIf="prevResults">Previous</ion-button>
+            <ion-button (click)="get(nextResults)" *ngIf="nextResults">Next</ion-button>
+          </ion-buttons>
+          <span *ngIf="!prevResults && !nextResults">Todos los Resultados</span>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

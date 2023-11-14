@@ -7,6 +7,15 @@ import { Component } from '@angular/core';
 })
 export class Tab2Page {
 
-  constructor() {}
+  constructor() {
+    this.get()
+  }
+  tracksList!: any;
+
+  get = () => {
+    this.tracksList = []
+    let tracks: [] = JSON.parse(localStorage.getItem("tracks") || "[]");
+    this.tracksList = tracks
+  }
 
 }
