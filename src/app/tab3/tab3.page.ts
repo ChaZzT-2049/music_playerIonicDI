@@ -17,7 +17,7 @@ export class Tab3Page {
   options = {
     method: 'GET',
     headers: {
-      'X-RapidAPI-Key': 'f2e5ff2764msh658e6f9f45eea17p18c5dajsn13cae43fb8c9',
+      'X-RapidAPI-Key': 'API-KEY',
       'X-RapidAPI-Host': 'deezerdevs-deezer.p.rapidapi.com'
     }
   };
